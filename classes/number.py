@@ -14,6 +14,6 @@ class Number(dbo.DBO):
 		return functions.db.calls.find({"number": self.number, "completed": False})
 
 	def get_current_call(self):
-		call = functions.db.calls.find_one({"number": self.number, "completed": False},sort=[("dt", pymongo.ASCENDING)])
+		call = functions.db.calls.find_one({"number": self.number, "completed": False},sort=[("dt", functions.pymongo.ASCENDING)])
 		functions.db.calls.update({"_id": call["_id"]},{"$set": {"completed": True}})
 		return call

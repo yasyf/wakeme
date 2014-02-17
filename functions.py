@@ -12,17 +12,17 @@ import datetime
 
 
 def create_call(number,time,*args):
-	message = args[0]
+	message = args[0] if len(args) > 0 else None
 	call = Call(None)
-	number = Number(number)
-	if not number.exists():
-		number.create()
+	number_obj = Number(number)
+	if not number_obj.exists():
+		number_obj.create()
 	dt = parse(time)
 	if dt.tzinfo == None:
-		dt = parse(time + number.get("tz"))
+		dt = parse(time + number_obj.get("tz"))
 	else:
-		number.set("tz",dt.tzname())		
-	if dt < datetime.datetime.utcnow():
+		number_obj.set("tz",dt.tzname())
+	if dt < datetime.datetime.utcnow().replace(tzinfo=tz.tzutc()):
 		dt = dt + datetime.timedelta(days=1)
 	call.create(number,dt,message)
 	resp = twilio.twiml.Response()

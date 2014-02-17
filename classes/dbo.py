@@ -6,18 +6,19 @@ class DBO(object):
 	"""MongoDB-Backed Object"""
 	def __init__(self,collection,oid,**kwargs):
 		self.collection = collection
-		for kw,val in kwargs:
+		self.obj = self.collection.find_one({"_id": ObjectId(oid)})
+		for kw,val in kwargs.iteritems():
 			self.obj = self.collection.find_one({kw: val})
 			if self.obj != None:
 				break
-		self.obj = self.collection.find_one({"_id": ObjectId(oid)})
-
+		
 	def exists(self):
 		return self.obj != None
 
 	def create(self, **kwargs):
 		if self.obj == None:
-			self.collection.insert(kwargs)
+			_id = self.collection.insert(kwargs)
+			self.obj = self.collection.find_one({"_id": ObjectId(_id)})
 
 	def get(self,attr):
 		try:
