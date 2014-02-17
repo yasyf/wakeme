@@ -48,4 +48,4 @@ def activate_call(number):
 	return str(resp)
 
 def call(number):
-	tw_client.calls.create(to=number, from_="+16176063543",url="http://http://ym-wakeme.herokuapp.com/alarm/activate")
+	tw_client.calls.create(to=number, from_="+16176063543",url="http://ym-wakeme.herokuapp.com/alarm/activate")
