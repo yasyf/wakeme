@@ -9,3 +9,11 @@ class Number(dbo.DBO):
 
 	def create(self):
 		super(Number,self).create(number=self.number,tz="UTC")
+
+	def get_calls(self):
+		return functions.db.calls.find({"number": self.number, "completed": False})
+
+	def get_current_call(self):
+		call = functions.db.calls.find_one({"number": self.number, "completed": False},sort=[("dt", pymongo.ASCENDING)])
+		functions.db.calls.update({"_id": call["_id"]},{"$set": {"completed": True}})
+		return call

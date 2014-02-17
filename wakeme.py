@@ -7,9 +7,17 @@ app = Flask(__name__)
 app.secret_key = os.environ['sk']
 
 
-@app.route('/alarm/create')
+@app.route('/alarm/create',methods=['POST', 'GET'])
 def create():
 	return create_call(request.values.get('From'),*request.values.get('Body').split('|'))
+
+@app.route('/alarm/view',methods=['POST', 'GET'])
+def view():
+	return view_call(request.values.get('From'))
+
+@app.route('/alarm/activate',methods=['POST', 'GET'])
+def activate():
+	return activate_call(request.values.get('To'))
 
 
 if __name__ == '__main__':
