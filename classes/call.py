@@ -12,4 +12,4 @@ class Call(dbo.DBO):
 		super(Call,self).create(number=number,dt=dt,message=message,completed=False)
 
 	def make_call(self):
-		functions.call(self.get("number"))
+		functions.call(self.get("number"),self.get('message'))

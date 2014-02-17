@@ -54,5 +54,9 @@ def activate_call(number):
 		resp.say(c['message'])
 	return str(resp)
 
-def call(number):
-	tw_client.calls.create(to=number, from_="+16176063543",url="http://ym-wakeme.herokuapp.com/alarm/activate")
+def call(number, message):
+	tw_client.calls.create(to=number, from_="+16176063543", url="http://ym-wakeme.herokuapp.com/alarm/activate")
+	text = "[wakeme] Time to get up!"
+	if message:
+		text += " " + message
+	tw_client.messages.create(to=number, from_="+16176063543", body=text)
