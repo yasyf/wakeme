@@ -19,7 +19,8 @@ def create_call(number,time,*args):
 		number_obj.create()
 	dt = parse(time)
 	if dt.tzinfo == None:
-		dt = parse(time + number_obj.get("tz"))
+		print time + number_obj.get("tz")
+		dt = parse(time + " " + number_obj.get("tz"))
 	else:
 		number_obj.set("tz",dt.tzname())
 	if dt < datetime.datetime.utcnow().replace(tzinfo=tz.tzutc()):
