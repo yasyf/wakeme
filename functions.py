@@ -15,19 +15,21 @@ def create_call(number,time,*args):
 	message = args[0] if len(args) > 0 else None
 	call = Call(None)
 	number_obj = Number(number)
+	now = datetime.datetime.utcnow().replace(tzinfo=tz.tzutc())
 	if not number_obj.exists():
 		number_obj.create()
 	dt = parse(time)
 	if dt.tzinfo == None:
-		print time + number_obj.get("tz")
 		dt = parse(time + " " + number_obj.get("tz"))
 	else:
 		number_obj.set("tz",dt.tzname())
-	if dt < datetime.datetime.utcnow().replace(tzinfo=tz.tzutc()):
+	if dt < now:
 		dt = dt + datetime.timedelta(days=1)
-	call.create(number,dt,message)
+
 	resp = twilio.twiml.Response()
 	resp.message("Alarm created for %s" % (dt.strftime("%c %Z")))
+	dt = dt.astimezone(tz.tzutc())
+	call.create(number,dt,message)
 	return str(resp)
 
 def view_call(number):
