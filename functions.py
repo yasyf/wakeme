@@ -24,3 +24,6 @@ def create_call(number,time,message,*args):
 	if dt < dt.utcnow():
 		dt = dt + datetime.timedelta(days=1)
 	call.create(number,dt,message)
+	resp = twilio.twiml.Response()
+	resp.message("Alarm created for %s" % (dt.strftime("%c %Z")))
+	return str(resp)
