@@ -11,7 +11,8 @@ from dateutil import tz
 import datetime
 
 
-def create_call(number,time,message,*args):
+def create_call(number,time,*args):
+	message = args[0]
 	call = Call(None)
 	number = Number(number)
 	if not number.exists():
