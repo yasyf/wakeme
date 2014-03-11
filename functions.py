@@ -20,8 +20,11 @@ def create_call(number,time,*args):
 		number_obj.create()
 	dt = parse(time)
 	if dt.tzinfo == None:
-		timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
-		dt = parse(time + " " + number_obj.get("tz")).replace(tzinfo=timezone)
+		try:
+			timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
+			dt = parse(time + " " + number_obj.get("tz")).replace(tzinfo=timezone)
+		except TypeError:
+			number_obj.set("tz",dt.tzname())
 	else:
 		number_obj.set("tz",dt.tzname())
 	if dt < now:
