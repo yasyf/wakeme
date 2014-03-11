@@ -26,9 +26,12 @@ def create_call(number,time,*args):
 			dt.replace(tzinfo=stored_timezone)
 		except TypeError:
 			number_obj.set("tz",timezone)
+			dt.replace(tzinfo=timezone)
 	else:
 		number_obj.set("tz",timezone)
 		dt.replace(tzinfo=stored_timezone)
+	if dt.tzinfo == None:
+		dt.replace(tzinfo=tz.gettz('UTC'))
 	if dt < now:
 		dt = dt + datetime.timedelta(days=1)
 
