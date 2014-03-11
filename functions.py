@@ -22,14 +22,14 @@ def create_call(number,time,*args):
 	dt = parse(time)
 	if dt.tzinfo == None:
 		try:
-			stored_timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
+			stored_timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz(timezone)
 			dt = dt.replace(tzinfo=stored_timezone)
 		except TypeError:
 			number_obj.set("tz",timezone)
-			dt = dt.replace(tzinfo=timezone)
+			dt = dt.replace(tzinfo=tz.gettz(timezone))
 	else:
 		number_obj.set("tz",timezone)
-		dt = dt.replace(tzinfo=stored_timezone)
+		dt = dt.replace(tzinfo=tz.gettz(timezone))
 	if dt.tzinfo == None:
 		dt = dt.replace(tzinfo=tz.tzutc())
 	if dt < now:
