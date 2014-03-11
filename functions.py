@@ -12,7 +12,8 @@ import datetime
 
 
 def create_call(number,time,*args):
-	message = args[0] if len(args) > 0 else None
+	timezone = args[0] if len(args) > 0 else None
+	message = args[1] if len(args) > 1 else None
 	call = Call(None)
 	number_obj = Number(number)
 	now = datetime.datetime.utcnow().replace(tzinfo=tz.tzutc())
@@ -21,12 +22,13 @@ def create_call(number,time,*args):
 	dt = parse(time)
 	if dt.tzinfo == None:
 		try:
-			timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
-			dt = parse(time + " " + number_obj.get("tz")).replace(tzinfo=timezone)
+			stored_timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
+			dt.replace(tzinfo=stored_timezone)
 		except TypeError:
-			number_obj.set("tz",dt.tzname())
+			number_obj.set("tz",timezone)
 	else:
-		number_obj.set("tz",dt.tzname())
+		number_obj.set("tz",timezone)
+		dt.replace(tzinfo=stored_timezone)
 	if dt < now:
 		dt = dt + datetime.timedelta(days=1)
 
