@@ -12,7 +12,7 @@ import datetime
 
 
 def create_call(number,time,*args):
-	timezone = args[0] if len(args) > 0 else None
+	timezone = args[0] if len(args) > 0 and len(args[0]) > 2 else None
 	message = args[1] if len(args) > 1 else None
 	call = Call(None)
 	number_obj = Number(number)
