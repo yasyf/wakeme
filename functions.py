@@ -23,15 +23,15 @@ def create_call(number,time,*args):
 	if dt.tzinfo == None:
 		try:
 			stored_timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz('UTC')
-			dt.replace(tzinfo=stored_timezone)
+			dt = dt.replace(tzinfo=stored_timezone)
 		except TypeError:
 			number_obj.set("tz",timezone)
-			dt.replace(tzinfo=timezone)
+			dt = dt.replace(tzinfo=timezone)
 	else:
 		number_obj.set("tz",timezone)
-		dt.replace(tzinfo=stored_timezone)
+		dt = dt.replace(tzinfo=stored_timezone)
 	if dt.tzinfo == None:
-		dt.replace(tzinfo=tz.gettz('UTC'))
+		dt = dt.replace(tzinfo=tz.tzutc())
 	if dt < now:
 		dt = dt + datetime.timedelta(days=1)
 
