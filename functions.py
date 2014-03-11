@@ -19,16 +19,16 @@ def create_call(number,time,*args):
 	now = datetime.datetime.utcnow().replace(tzinfo=tz.tzutc())
 	if not number_obj.exists():
 		number_obj.create()
+	if timezone:
+		number_obj.set("tz",timezone)
 	dt = parse(time)
 	if dt.tzinfo == None:
 		try:
 			stored_timezone = tz.gettz(number_obj.get("tz")) if tz.gettz(number_obj.get("tz")) else tz.gettz(timezone)
 			dt = dt.replace(tzinfo=stored_timezone)
 		except TypeError:
-			number_obj.set("tz",timezone)
 			dt = dt.replace(tzinfo=tz.gettz(timezone))
 	else:
-		number_obj.set("tz",timezone)
 		dt = dt.replace(tzinfo=tz.gettz(timezone))
 	if dt.tzinfo == None:
 		dt = dt.replace(tzinfo=tz.tzutc())
